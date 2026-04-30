@@ -1221,7 +1221,7 @@ def get_news_intelligence(candidates, ctx, headlines, sector_news, all_stock_new
     macro_text       = '\n'.join(headlines[:20])
     sector_text      = '\n'.join([f'[{sec}] {" | ".join(n[:3])}' for sec, n in sector_news.items() if sec in sectors_in_pool]) or 'No sector news'
     stock_news_pool  = {c['ticker']: all_stock_news.get(c['ticker'], []) for c in candidates}
-    stock_text       = '\n'.join([f'{t}: {" | ".join(h[:2])}' for t, h in stock_news_pool.items() if h]) or 'No individual stock news'
+    stock_text       = '\n'.join([f'{t}: {h[0]}' for t, h in stock_news_pool.items() if h]) or 'No individual stock news'
 
     all_tickers    = [c['ticker'] for c in candidates]
     both_tickers   = [c['ticker'] for c in candidates if c['source'] == 'BOTH']
@@ -1594,7 +1594,7 @@ def display_result(result, ctx, nd, ep, wl, all_candidates=None):
     if wl:
         print('\n  WATCH LIST:')
         for w in wl:
-            wf=next((c for c in (all_candidates or []) if c['ticker']==w.get('ticker')},{})
+            wf=next((c for c in (all_candidates or []) if c['ticker']==w.get('ticker')), {})
             print(f'  WATCH: {w.get("ticker")} | {w.get("confidence")}/100 | {w.get("sector")} | {w.get("reasoning","")}')
     print('='*65)
 
